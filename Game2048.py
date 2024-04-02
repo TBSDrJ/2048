@@ -7,15 +7,16 @@ import random
 import sys
 
 class Game2048:
-    def __init__(self, width = 4, height = 4, prob_4 = 0.9):
+    """Game Engine for 2048 with a simple API and no rendering."""
+    def __init__(self, width:int=4, height:int=4, prob_4:float=0.1):
         self.width = width
         self.height = height
         self.prob_4 = prob_4
         self.game_over = False
         self.score = 0
-        self.board = self.new_game()
+        self.board = self._new_game()
 
-    def new_game(self) -> list[list[int]]:
+    def _new_game(self) -> list[list[int]]:
         """Sets up a new board with two random tiles in it."""
         board = [[0 for i in range(self.width)] for j in range(self.height)]
         tiles_placed = 0
@@ -24,13 +25,13 @@ class Game2048:
             j = random.randrange(self.height)
             if board[j][i] == 0:
                 if random.random() < self.prob_4:
-                    board[j][i] = 2
-                else:
                     board[j][i] = 4
+                else:
+                    board[j][i] = 2
                 tiles_placed += 1            
         return board
 
-    def merge_one_left(self, row: list[int]) -> (list[int], bool):
+    def _merge_one_left(self, row: list[int]) -> (list[int], bool):
         """Apply merge operation to one row, moving left.
         
         Other moves can be executed by setting up the row properly."""
@@ -68,7 +69,7 @@ class Game2048:
                 elif dir == 'R' or dir == 'r':
                     row = board[i]
                     row.reverse()
-                row, ch = self.merge_one_left(row)
+                row, ch = self._merge_one_left(row)
                 if dir == 'L' or dir == 'l':
                     board[i] = row
                 elif dir == 'R' or dir == 'r':
@@ -84,7 +85,7 @@ class Game2048:
                     row.reverse()
                 else:
                     raise ValueError(f"Invalid direction '{dir}' received.")
-                row, ch = self.merge_one_left(row)
+                row, ch = self._merge_one_left(row)
                 if dir == 'U' or dir == 'u':
                     for j in range(self.height):
                         board[j][i] = row[j]
@@ -134,34 +135,35 @@ class Game2048:
         if len(available_locations) > 0:
             loc = random.choice(available_locations)
             if random.random() < self.prob_4:
-                self.board[loc[1]][loc[0]] = 2
-            else:
                 self.board[loc[1]][loc[0]] = 4
+            else:
+                self.board[loc[1]][loc[0]] = 2
             return True
         return False
     
-    def one_turn(self, move: str | int) -> bool:
-        """Run one turn.  Returns True if game is over, False if not.
+    def one_turn(self, move: int) -> bool:
+        """Run one turn.  Returns True if something changed, False if not.
         
         Moves: 0=Up, 1=Left, 2=Down, 3=Right (following WASD)"""
         if move == 0:
             ch = self.merge_up()
-        if move == 1:
+        elif move == 1:
             ch = self.merge_left()
-        if move == 2:
+        elif move == 2:
             ch = self.merge_down()
-        if move == 3:
+        elif move == 3:
             ch = self.merge_right()
         if ch:
             self.add_tile()
         self.game_over = self.game_over_check()
+        return ch
 
 class Text2048:
-    def __init__(self, width = 4, height = 4, prob_4 = 0.9):
+    def __init__(self, width = 4, height = 4, prob_4 = 0.1):
         self.width = width
         self.height = height
         self.prob_4 = prob_4
-        self.game = Game2048()
+        self.game = Game2048(width, height, prob_4)
         print("Please use WASD controls: W=Up, A=Left, S=Down, D=Right.")
         print()
         self.print_board()
@@ -227,4 +229,4 @@ class Text2048:
         print(board_end, end="", **kwargs)
 
 if __name__ == "__main__":
-    game = Text2048()
+    game = Text2048(5, 3)
