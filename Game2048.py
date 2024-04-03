@@ -4,7 +4,7 @@ Implementation of 2048 as an importable class/module, or playable as __main__.
 """
 from __future__ import annotations
 import random
-import sys
+from argparse import ArgumentParser
 
 class Game2048:
     """Game Engine for 2048 with a simple API and no rendering."""
@@ -229,4 +229,14 @@ class Text2048:
         print(board_end, end="", **kwargs)
 
 if __name__ == "__main__":
-    game = Text2048(5, 3)
+    ap = ArgumentParser()
+    ap.add_argument("--width", default=4, 
+            help="Set the width, or number of columns of the board.")
+    ap.add_argument("--height", default=4,
+            help="Set the height, or number of rows of the board.")
+    ap.add_argument("-p", "--prob4", default=0.1,
+            help="Set the probability that you get a 4 in a new tile.")
+    args = vars(ap.parse_args())
+    print(args)
+    game = Text2048(width=args["width"], height=args["height"], 
+            prob_4=args["prob4"])
