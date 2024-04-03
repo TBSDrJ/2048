@@ -114,7 +114,7 @@ Then, `game` is a 2048 instance and then the program will run Up, Left, Up, Left
 
 This is not a great strategy, but it is not actually terrible either.  In my limited testing, it seems to be a bit more than twice as good as random moves.
 
-The remaining methods are just components of this, but are exposes in case they are useful:
+The remaining methods are just components of `.one_turn()`, but are exposed in case they are useful:
 
 ### `.merge_up()`, `.merge_left()`, `.merge_down()`, `.merge_right()`
 
@@ -136,3 +136,7 @@ This takes no arguments, and has one return:
 ### `.add_tile()`
 
 This adds one tile to the board.  The location is randomly generated, using a (approx.) uniform distribution across only the empty locations.  The value of the tile is also randomly determined: either a 4, using `self.prob_4` as the probability this occurs, or a 2, otherwise.
+
+### Private methods
+
+There are also a few private methods that are not intended for outside access, you can use introspection or read the source code if you want to cause trouble with these.
