@@ -31,7 +31,8 @@ class Game2048:
                 tiles_placed += 1            
         return board
 
-    def _merge_one_left(self, row: list[int]) -> (list[int], bool):
+    def _merge_one_left(self, row: list[int], execute: bool
+            ) -> (list[int], bool):
         """Apply merge operation to one row, moving left.
         
         Other moves can be executed by setting up the row properly."""
@@ -47,7 +48,8 @@ class Game2048:
             elif entry != 0 and entry == pvs_entry:
                 # Combine if possible
                 new_row[i-1] = 2*entry
-                self.score += 2*entry
+                if execute:
+                    self.score += 2*entry
                 pvs_entry = 0
         changed = False
         for i in range(len(row)):
@@ -69,7 +71,7 @@ class Game2048:
                 elif dir == 'R' or dir == 'r':
                     row = board[i]
                     row.reverse()
-                row, ch = self._merge_one_left(row)
+                row, ch = self._merge_one_left(row, execute)
                 if dir == 'L' or dir == 'l':
                     board[i] = row
                 elif dir == 'R' or dir == 'r':
@@ -85,7 +87,7 @@ class Game2048:
                     row.reverse()
                 else:
                     raise ValueError(f"Invalid direction '{dir}' received.")
-                row, ch = self._merge_one_left(row)
+                row, ch = self._merge_one_left(row, execute)
                 if dir == 'U' or dir == 'u':
                     for j in range(self.height):
                         board[j][i] = row[j]
@@ -230,11 +232,11 @@ class Text2048:
 
 if __name__ == "__main__":
     ap = ArgumentParser()
-    ap.add_argument("--width", default=4, 
+    ap.add_argument("--width", default=4, type=int,
             help="Set the width, or number of columns of the board.")
-    ap.add_argument("--height", default=4,
+    ap.add_argument("--height", default=4, type=int,
             help="Set the height, or number of rows of the board.")
-    ap.add_argument("-p", "--prob4", default=0.1,
+    ap.add_argument("-p", "--prob4", default=0.1, type=float,
             help="Set the probability that you get a 4 in a new tile.")
     args = vars(ap.parse_args())
     print(args)
