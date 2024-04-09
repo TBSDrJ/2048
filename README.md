@@ -5,9 +5,17 @@ This repo contains the following:
     1. A way to just play 2048 with a text-based interface.
     1. A basic greedy look-ahead algorithm: check all possible moves n steps ahead several times, make the computer's next move be the first move of the sequence with the highest average result.
     1. A genetic look-ahead algorithm: generate several random sequences of moves, check which are better, keep those, toss the rest, randomly modify the better ones, check which are better, keep those, toss the rest, etc..  After a specified number of generations, make the computer's next move the first move of the sequence with the highest average result.
-1. [Game2048.py](Game2048.py): This is a Python 3 class that implements 2048 as a class (`Game2048`) with a simple API.  This has much better coding practices and documentation (including this README). This implementation does not include any rendering, it is just a game engine.  The file also contains a text-based rendering engine as a class (`Text2048`).  My goal is to create a `tf-agents` environment out of this and train an AI-powered agent to beat me at 2048.
+1. [Game2048.py](Game2048.py): This is a Python 3 class that implements 2048 as a class (`Game2048`) with a simple API.  This has much better coding practices and documentation (including this README) than the old one above. This implementation does not include any rendering, it is just a game engine.  This file also contains a text-based rendering engine as a class (`Text2048`).  My goal is to create a `tf-agents` environment out of this and train an AI-powered agent to beat me at 2048.
 
-## `Game2048` Documentation
+1. [render_2048.py](render_2048.py) This is a PyGame rendering of the Game2048 API.  It's pretty basic, but it works ok for reasonably sized boards.
+
+1. [Env2048.py](Env2048.py) This creates a Tf-Agents PyEnvironment out of Game2048, which can then be used for a Reinforcement Learning algorithm to learn to play 2048.
+
+1. [RL2048.py](RL2048.py) This is my attempt to train a TF-Agent to play 2048.  So far, it is failing.  I am having two problems that I don't yet have solutions for:
+    1. I can't get the batching to work right unless I manually assemble the time steps into a trajectory.  The TFEnvironment that is derived from the PyEnvironment isn't producing batched time steps, and I don't know why yet.  So, I'm taking the time steps from the PyEnvironment and constructing batched Tensors from those manually, but that isn't great, and is almost definitely causing the problem in the next entry.  The QNetwork and the Agent draw from the TFEnvironment, but the data that is trained on is coming from the PyEnvironment, so I'm quite sure it's just not training at all.
+    1. The `eval_policy` is choosing the same action over and over persistently.  In 2048, this is  useless.  But, it won't train away from that approach, and I can't figure out why yet.
+
+## class `Game2048` Documentation
 
 Documentation for the `Game2048` class:
 
