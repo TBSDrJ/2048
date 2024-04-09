@@ -9,7 +9,7 @@ This repo contains the following:
 
 1. [render_2048.py](render_2048.py) This is a PyGame rendering of the `Game2048` API.  It's pretty basic, but it works ok for reasonably sized boards.
 
-1. [Env2048.py](Env2048.py) This creates a Tf-Agents `PyEnvironment` out of Game2048, which can then be used for a Reinforcement Learning algorithm to learn to play 2048.  This may have issues?  See RL2048, next bullet item. 
+1. [Env2048.py](Env2048.py) This creates a Tf-Agents `PyEnvironment` out of Game2048, which can then be used for a Reinforcement Learning algorithm to learn to play 2048.  This may have issues?  See RL2048, next bullet item.  I am working from [TF-Agents Environments guide](https://www.tensorflow.org/agents/tutorials/2_environments_tutorial#python_environments)
 
 1. [RL2048.py](RL2048.py) This is my attempt to train a TF-Agent to play 2048.  So far, it is failing.  I am having two problems that I don't yet have solutions for:
     1. I can't get the batching to work right unless I manually assemble the time steps into a trajectory.  The `TFEnvironment` that is derived from the `PyEnvironment` isn't producing batched time steps, and I don't know why yet.  Maybe I did something wrong in the `PyEnvironment` setup?  So, I'm taking the time steps from the `PyEnvironment` and constructing batched Tensors from those manually, but that isn't great, and is almost definitely causing the problem in the next entry.  The QNetwork and the Agent draw from the `TFEnvironment`, but the data that is trained on is coming from the `PyEnvironment`, so I'm quite sure it's just not training at all.
