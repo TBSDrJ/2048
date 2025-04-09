@@ -129,7 +129,7 @@ The remaining methods are just components of `.one_turn()`, but are exposed in c
 These carry out the merge step of the move.
 
 The `.merge_x()` methods all have one optional argument:
-1. `execute`: `bool`, default: `True`.  If `execute` is `True`, then `self.board` will be changed to reflect the move.  If `execute` is `False`, then `self.board` will be unchanged, but the return value will indicate whether or not the board would have been changed if this move were carried out.  The `False` case was included to make it easy to test if the game is over or not -- the game is over when none of the four possible moves changes the board.  The `False` case is also useful if you want to program any kind of look-ahead algorithm.
+1. `execute`: `bool`, default: `True`.  If `execute` is `True`, then `self.board` will be changed to reflect the move.  If `execute` is `False`, then `self.board` will be unchanged, but the return value will indicate whether or not the board would have been changed if this move were carried out.  The `False` case was included to make it easy to test if the game is over or not -- the game is over when none of the four possible moves changes the board.  The `False` case is also useful if you want to program any kind of look-ahead algorithm, though I have not yet implemented a way to get the score of a move that isn't carried out.
 
 These have one return value:
 1. `bool`: Whether or not the board was/would have been changed by carrying out this move.
